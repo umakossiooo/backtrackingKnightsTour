@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream> // Para manejar archivos
 #include <vector>
 using namespace std;
 
@@ -36,8 +37,15 @@ bool solveKnightTour(int x, int y, int moveCount, int N, vector<vector<int>> &bo
 
 int main() {
     int N;
-    cout << "Ingresa el tamano del tablero (N): ";
-    cin >> N;
+
+    // Leer la entrada desde un archivo llamado "in.txt"
+    ifstream inputFile("in.txt");
+    if (!inputFile) {
+        cerr << "Error: No se pudo abrir el archivo in.txt" << endl;
+        return 1;
+    }
+    inputFile >> N; // Leer el tamaño del tablero
+    inputFile.close();
 
     // Crear el tablero inicial
     vector<vector<int>> board(N, vector<int>(N, -1));
@@ -45,18 +53,31 @@ int main() {
     // Posición inicial del caballo
     board[0][0] = 0;
 
+    // Crear el archivo de salida
+    ofstream outputFile("out.txt");
+    if (!outputFile) {
+        cerr << "Error: No se pudo crear el archivo output.txt" << endl;
+        return 1;
+    }
+
     // Resolver el problema
     if (solveKnightTour(0, 0, 1, N, board)) {
-        // Imprimir la solución
+        // Imprimir la solución en la consola y en el archivo
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 cout << board[i][j] << "\t";
+                outputFile << board[i][j] << "\t";
             }
             cout << endl;
+            outputFile << endl;
         }
     } else {
-        cout << "No se encontro solucion para un tablero de tamano " << N << "." << endl;
+        // Mensaje de error si no hay solución
+        string errorMsg = "No se encontro solucion para un tablero de tamano " + to_string(N) + ".";
+        cout << errorMsg << endl;
+        outputFile << errorMsg << endl;
     }
 
+    outputFile.close(); // Cerrar el archivo de salida
     return 0;
 }
