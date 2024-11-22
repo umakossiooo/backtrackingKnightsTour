@@ -55,7 +55,7 @@ int main() {
             cout << endl;
         }
     } else {
-        cout << "No se encontró solución para un tablero de tamaño " << N << "." << endl;
+        cout << "No se encontro solucion para un tablero de tamano " << N << "." << endl;
     }
 
     return 0;
